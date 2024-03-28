@@ -1,7 +1,36 @@
 ﻿@page "/"
+@using Wasm.Offcanvas.Test.Components
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Wasm Modal</h1>
 
-Welcome to your new app.
+<button class="btn btn-primary" @onclick="Create1">
+    Create Offcanvas 1
+</button>
+<button class="btn btn-primary" @onclick="Create2">
+    Create Offcanvas 2
+</button>
+<button class="btn btn-primary" @onclick="Create3">
+    Create Offcanvas 3
+</button>
+
+@inject IOffcanvasManager OffcanvasManager
+@code {
+
+    private async Task Create1()
+    {
+        await OffcanvasManager.CreateOffcanvasAsync<TestContent1>(OffcanvasPosition.Start,"TestContent1");
+    }
+    
+    private async Task Create2()
+    {
+        await OffcanvasManager.CreateOffcanvasAsync<TestContent2>(OffcanvasPosition.End, "TestContent2");
+    }
+    
+    private async Task Create3()
+    {
+        await OffcanvasManager.CreateOffcanvasAsync<TestContent3>(OffcanvasPosition.Top,"TestContent3");
+    }
+
+}

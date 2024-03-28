@@ -1,4 +1,99 @@
-@* Will create multiple offcanvas *@
-<OffcanvasComponent />
-@* Backdrop will stay here / will allow backdrop for multiple offcanvas *@
-<div class="offcanvas-backdrop fade show"></div>
+@if (Dictionary.Any())
+{
+    <div class="@BackdropClass"></div>
+
+    @foreach (var component in Dictionary)
+    {
+        <OffcanvasComponent Model="@component.Value" ParentOffcanvas="@this">
+            @CreateComponent(component.Value.ChildContentType)
+        </OffcanvasComponent>
+    }
+}
+
+@implements IDisposable
+@implements IOffcanvas
+@inject IOffcanvasManager OffcanvasManager
+
+@code {
+    private Dictionary<Type, OffcanvasModel> Dictionary { get; } = [];
+
+    private string BackdropClass
+    {
+        get
+        {
+            var value = "offcanvas-backdrop";
+            if (_showingBackdrop)
+                value += " showing";
+            if (_showBackdrop)
+                value += " show";
+            if (_hidingBackdrop)
+                value += " hiding";
+            return value;
+        }
+    }
+
+    private bool _showBackdrop;
+    private bool _showingBackdrop;
+    private bool _hidingBackdrop;
+
+    protected override void OnInitialized()
+    {
+        OffcanvasManager.OnCreateOffcanvas += HandleCreateOffcanvas;
+    }
+
+    public async Task CloseOffcanvasAsync(Type type)
+    {
+        if (!Dictionary.ContainsKey(type))
+            return;
+        if (Dictionary.Count == 1)
+        {
+            _hidingBackdrop = true;
+            await InvokeAsync(StateHasChanged);
+            await Task.Delay(300);
+            _hidingBackdrop = false;
+            _showBackdrop = false;
+        }
+
+        Dictionary.Remove(type);
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async void HandleCreateOffcanvas(object? sender, CreateOffcanvasEventArgs args)
+    {
+        if (Dictionary.ContainsKey(args.Model.ChildContentType))
+            return;
+        Dictionary.Add(args.Model.ChildContentType, args.Model);
+        await InvokeAsync(StateHasChanged);
+
+        if (_showBackdrop)
+            return;
+
+        _showingBackdrop = true;
+        await InvokeAsync(StateHasChanged);
+        _showBackdrop = true;
+        await Task.Delay(300);
+        _showingBackdrop = false;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task HandleBackdropClick()
+    {
+        Dictionary.Clear();
+        await InvokeAsync(StateHasChanged);
+    }
+    
+    private RenderFragment CreateComponent(Type type)
+    {
+        return builder =>
+        {
+            builder.OpenComponent(0, type);
+            builder.CloseComponent();
+        };
+    }
+
+    public void Dispose()
+    {
+        OffcanvasManager.OnCreateOffcanvas -= HandleCreateOffcanvas;
+    }
+
+}

@@ -1,9 +1,63 @@
-<div class="offcanvas offcanvas-start show" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel">
+@implements IOffcanvasComponent
+
+<div class="@Class" tabindex="-1" id="offcanvas" aria-labelledby="@($"{Model.ChildContentType}Title")">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasLabel">Offcanvas</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <h5 class="offcanvas-title" id="@($"{Model.ChildContentType}Title")">@Model.Title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" @onclick="CloseAsync"></button>
     </div>
     <div class="offcanvas-body">
-        Content for the offcanvas goes here. You can place just about any Bootstrap component or custom elements here.
+        <CascadingValue Value="@this">
+             @ChildContent
+        </CascadingValue>
     </div>
 </div>
+
+@code {
+    private bool _showing;
+    private bool _show;
+    private bool _hiding;
+    
+    private string Class
+    {
+        get
+        {
+            var value = $"offcanvas offcanvas-{Model.Position.ToString().ToLower()}";
+            if (_showing)
+                value += " showing";
+            if (_show)
+                value += " show";
+            if (_hiding)
+                value += " hiding";
+            return value;
+        }
+    }
+    
+    [Parameter] public IOffcanvas ParentOffcanvas { get; set; } = default!;
+    [Parameter] public OffcanvasModel Model { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _showing = true;
+            await InvokeAsync(StateHasChanged);
+            await Task.Delay(300);
+            _showing = false;
+            _show = true;
+            await InvokeAsync(StateHasChanged);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+    
+    public async Task CloseAsync()
+    {
+        _hiding = true;
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(300);
+        _hiding = false;
+        _show = false;
+        await ParentOffcanvas.CloseOffcanvasAsync(Model.ChildContentType);
+    }
+}
