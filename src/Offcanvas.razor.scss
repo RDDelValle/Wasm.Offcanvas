@@ -1,0 +1,45 @@
+.offcanvas {
+  display: block;
+  transition: none;
+}
+
+.offcanvas-backdrop {
+  --bs-backdrop-opacity: 0.5;
+  //z-index: -1;
+  opacity: 0;
+
+  &.show {
+    opacity: var(--bs-backdrop-opacity);
+  }
+
+  &.showing {
+    animation-duration: 300ms;
+    animation-name: fadeIn;
+  }
+
+  &.hiding {
+    animation-duration: 300ms;
+    animation-name: fadeOut;
+  }
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: var(--bs-backdrop-opacity);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: var(--bs-backdrop-opacity);
+  }
+
+  to {
+    opacity: 0;
+  }
+}

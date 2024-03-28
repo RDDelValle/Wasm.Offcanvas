@@ -1,0 +1,149 @@
+.offcanvas {
+  opacity: 0;
+  transition: none;
+}
+
+.offcanvas-start {
+  transform: translateX(-100%);
+}
+.offcanvas-start.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+.offcanvas-start.showing {
+  animation-duration: 300ms;
+  animation-name: fadeIn, slideInStart;
+}
+.offcanvas-start.hiding {
+  animation-duration: 300ms;
+  animation-name: fadeOut, slideOutStart;
+}
+
+.offcanvas-end {
+  transform: translateX(100%);
+}
+.offcanvas-end.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+.offcanvas-end.showing {
+  animation-duration: 300ms;
+  animation-name: fadeIn, slideInEnd;
+}
+.offcanvas-end.hiding {
+  animation-duration: 300ms;
+  animation-name: fadeOut, slideOutEnd;
+}
+
+.offcanvas-top {
+  transform: translateY(-100%);
+}
+.offcanvas-top.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.offcanvas-top.showing {
+  animation-duration: 300ms;
+  animation-name: fadeIn, slideInTop;
+}
+.offcanvas-top.hiding {
+  animation-duration: 300ms;
+  animation-name: fadeOut, slideOutTop;
+}
+
+.offcanvas-bottom {
+  transform: translateY(100%);
+}
+.offcanvas-bottom.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.offcanvas-bottom.showing {
+  animation-duration: 300ms;
+  animation-name: fadeIn, slideInBottom;
+}
+.offcanvas-bottom.hiding {
+  animation-duration: 300ms;
+  animation-name: fadeOut, slideOutBottom;
+}
+
+@keyframes slideInStart {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes slideOutStart {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+@keyframes slideInEnd {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes slideOutEnd {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes slideInTop {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes slideOutTop {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+@keyframes slideInBottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes slideOutBottom {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

@@ -3,34 +3,42 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Wasm Modal</h1>
+<h1>Wasm Offcanvas</h1>
 
-<button class="btn btn-primary" @onclick="Create1">
-    Create Offcanvas 1
+<button class="btn btn-primary" @onclick="CreateStart">
+    Create Offcanvas Start
 </button>
-<button class="btn btn-primary" @onclick="Create2">
-    Create Offcanvas 2
+<button class="btn btn-primary" @onclick="CreateEnd">
+    Create Offcanvas End
 </button>
-<button class="btn btn-primary" @onclick="Create3">
-    Create Offcanvas 3
+<button class="btn btn-primary" @onclick="CreateTop">
+    Create Offcanvas Top
+</button>
+<button class="btn btn-primary" @onclick="CreateBottom">
+    Create Offcanvas Bottom
 </button>
 
 @inject IOffcanvasManager OffcanvasManager
 @code {
 
-    private async Task Create1()
+    private async Task CreateStart()
     {
-        await OffcanvasManager.CreateOffcanvasAsync<TestContent1>(OffcanvasPosition.Start,"TestContent1");
+        await OffcanvasManager.CreateOffcanvasAsync<TestContent1>(OffcanvasPosition.Start,"Offcanvas Start");
     }
     
-    private async Task Create2()
+    private async Task CreateEnd()
     {
-        await OffcanvasManager.CreateOffcanvasAsync<TestContent2>(OffcanvasPosition.End, "TestContent2");
+        await OffcanvasManager.CreateOffcanvasAsync<TestContent2>(OffcanvasPosition.End, "Offcanvas End");
     }
     
-    private async Task Create3()
+    private async Task CreateTop()
     {
-        await OffcanvasManager.CreateOffcanvasAsync<TestContent3>(OffcanvasPosition.Top,"TestContent3");
+        await OffcanvasManager.CreateOffcanvasAsync<TestContent3>(OffcanvasPosition.Top,"Offcanvas Top");
+    }
+    
+    private async Task CreateBottom()
+    {
+        await OffcanvasManager.CreateOffcanvasAsync<TestContent3>(OffcanvasPosition.Bottom,"Offcanvas Bottom");
     }
 
 }
